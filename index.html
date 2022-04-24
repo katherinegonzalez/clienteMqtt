@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="messages-container">
+        <h1 class="messages-container__title">Proyecto MQTT</h1>
+        <div class="messages-container__content">
+            <div class="message-container__card messagges-container__list">
+                <h2 class="messagges-container__list-title"> Mensajes Recibidos</h2>
+                <ul id="listaMensajesRecibidos">
+                    <li>Mensaje recibido 1</li>
+                    <li>Mensaje recibido 2</li>
+                    <li>Mensaje recibido 3</li>
+                </ul>
+            </div>
+    
+            <div class="message-container__card messagges-container__send-messages">
+                <h3>Escribe mensaje a enviar Mensaje: </h3>
+                <label for="sMessage">Message:</label>
+                <input type="text" id="sMessage" name="sMessage"><br><br>
+                <button id="btnEnviar" onClick="sendMessage()">Enviar Mensaje</button>
+            </div>
+        </div> 
+    </div>
+
+<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+<script src="index.js"></script>
+</body>
+</html>

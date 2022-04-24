@@ -1,0 +1,23 @@
+body {
+    background-color: #EDF2FA;
+}
+
+.messages-container__content {
+    display: flex;
+}
+
+.message-container__card {
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    box-shadow: 0px 2px 1px #e0dede;
+    flex: 1;
+    margin: 10px;
+    padding: 10px 15px;
+}
+
+.messagges-container__list li{
+    list-style:  none;
+}
+
+
+/* https://themes.getbootstrap.com/preview/?theme_id=33181 */

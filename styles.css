@@ -34,6 +34,8 @@ h1.messages-container__title {
     flex: 1;
     margin: 10px;
     padding: 10px 15px;
+    display: flex;
+    flex-direction: column;
 }
 
 .messagges-container__list {
@@ -43,6 +45,12 @@ h1.messages-container__title {
 .messagges-container__list-title_container {
     display: flex;
     align-items: center;
+}
+
+ul {
+    /*flex: 1;*/
+    height: 440px;
+    overflow: auto;
 }
 
 .messagges-container__list-title {

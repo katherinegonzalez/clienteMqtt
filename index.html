@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
+    <link href="/assets/font/Roboto" rel="stylesheet">
     <title>Document</title>
 </head>
 <body>
@@ -13,7 +14,15 @@
         <h1 class="messages-container__title">Proyecto MQTT</h1>
         <div class="messages-container__content">
             <div class="message-container__card messagges-container__list">
-                <h2 class="messagges-container__list-title"> Mensajes Recibidos</h2>
+                <div class="messagges-container__list-title_container">
+                    <h2 class="messagges-container__list-title"> Mensajes Recibidos</h2>
+                    <select name="messaggesSelect" id="selectMensajes">
+                        <option value="recibidos">Mensajes Recibidos</option>
+                        <option value="enviados">Mensajes Enviados</option>
+                        <option value="Todos">Todos</option>
+                      </select>
+                </div>
+                <br><br>
                 <ul id="listaMensajesRecibidos">
                     <li><img class="icon-list" src="assets/icons/received_icon.svg" alt="Received message"></i><span>Mensaje recibido 1</span></li>
                     <li><img class="icon-list" src="assets/icons/sent_icon.svg" alt="Sent message"></i><span>Mensaje enviado 1</span></li>
@@ -22,9 +31,10 @@
             </div>
     
             <div class="message-container__card messagges-container__send-messages">
-                <h3>Escribe mensaje a enviar Mensaje: </h3>
-                <label for="sMessage">Message:</label>
-                <input type="text" id="sMessage" name="sMessage"><br><br>
+                <h2>Enviar Mensajes</h2>
+                <br> <br>
+                <textarea rows="4" id="sMessage" name="sMessage" placeholder="Escriba el mensaje a enviar..."></textarea>
+                <br><br>
                 <button id="btnEnviar" onClick="sendMessage()">Enviar Mensaje</button>
             </div>
         </div> 

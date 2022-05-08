@@ -13,11 +13,38 @@ const WebSocketURL = "ws://20.225.162.185:8093/mqtt";
 
 const client = mqtt.connect(WebSocketURL, options);
 
+const filterMessages = (messageType = "todos") => {
+    const mensajesEnviados =  Array.from(document.getElementsByClassName("mensaje-enviado"));
+    console.log('mensajesEnviados: ',  Array.from(mensajesEnviados));
+    const mensajesRecibidos =  Array.from(document.getElementsByClassName("mensaje-recibido"));
+    if(messageType ===  "enviados"){
+        mensajesRecibidos.map(mensajeRecibido => mensajeRecibido.style.display = "none");
+        mensajesEnviados.map(mensajeEnviado => mensajeEnviado.style.display = "flex");
 
+    } else if(messageType ===  "recibidos"){
+        mensajesRecibidos.map(mensajeRecibido => mensajeRecibido.style.display = "flex");
+        mensajesEnviados.map(mensajeEnviado => mensajeEnviado.style.display = "none");
+       
+    } else {
+        mensajesRecibidos.map(mensajeRecibido => mensajeRecibido.style.display = "flex");
+        mensajesEnviados.map(mensajeEnviado => mensajeEnviado.style.display = "flex");
+    }
+}
+
+const selectElement = document.getElementById('selectMensajes');
+
+selectElement.addEventListener('change', (event) => {
+    const resultado = document.querySelector('.resultado');
+    console.log(event.target.value);
+    filterMessages(event.target.value);
+});
 
 const addMessage = (message, idType) => {
     //Create an "li" node:
     const node = document.createElement("li");
+    const liClass = idType === "receivedMessage" ? "mensaje-recibido": "mensaje-enviado";
+    node.classList.add(liClass);
+
 
     // Create img node
     const img = document.createElement("img");

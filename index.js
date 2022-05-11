@@ -49,6 +49,7 @@ const showToast = (text, type = '') => {
     }).showToast();
 }
 
+const noHayMensajes = document.getElementById('noMensajes');
 let client = mqtt.connect(WebSocketURLAzure, options);
 
 console.log('client: ', client);
@@ -91,9 +92,10 @@ client.on("reconnect", () => {
 });
 
 const filterMessages = (messageType = "todos") => {
+    //TODO: Bloquear el filter si no hay mensajes para evitar el error de que no se filtra
     const mensajesEnviados =  Array.from(document.getElementsByClassName("mensaje-enviado"));
-    console.log('mensajesEnviados: ',  Array.from(mensajesEnviados));
     const mensajesRecibidos =  Array.from(document.getElementsByClassName("mensaje-recibido"));
+   
     if(messageType ===  "enviados"){
         mensajesRecibidos.map(mensajeRecibido => mensajeRecibido.style.display = "none");
         mensajesEnviados.map(mensajeEnviado => mensajeEnviado.style.display = "flex");
@@ -117,6 +119,10 @@ selectElement.addEventListener('change', (event) => {
 });
 
 const addMessage = (message, idType) => {
+    if (noHayMensajes.style.display = 'block') {
+        noHayMensajes.style.display = 'none';
+    }
+    
     //Create an "li" node:
     const node = document.createElement("li");
     const liClass = idType === "receivedMessage" ? "mensaje-recibido": "mensaje-enviado";

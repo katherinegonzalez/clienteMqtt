@@ -1,5 +1,10 @@
 // An mqtt variable will be initialized globally 
 // https://www.emqx.com/en/blog/mqtt-js-tutorial
+
+// Azure: http://20.127.83.110:18083 -> tools -> websocket
+// user:admin
+// pass: public
+
 console.log(mqtt)
 const options = {
     connectTimeout: 4000,
@@ -9,9 +14,81 @@ const options = {
 }
 
 // Websocket  connect url
-const WebSocketURL = "ws://20.225.162.185:8093/mqtt";
+const WebSocketURLAzure = "ws://20.127.83.110:8093/mqtt";
+const WebSocketURLAmazon = "ws://54.163.248.88:8093/mqtt";
 
-const client = mqtt.connect(WebSocketURL, options);
+const isAmazonClient = (hostname) => WebSocketURLAmazon.includes(hostname);
+const isAzureClient = (hostname) => WebSocketURLAzure.includes(hostname);
+const reconnectOtherClient = () => {
+    if(isAzureClient(client.options.hostname)){
+        client.end();
+        client = mqtt.connect(WebSocketURLAmazon, options);
+    } else if(isAmazonClient(client.options.hostname)) {
+        client.end();
+        client = mqtt.connect(WebSocketURLAzure, options);
+    }
+    console.log(client);
+}
+
+const showToast = (text, type = '') => {
+    let color = '#212121'
+    if (type === 'success' ) {
+        color = '#4CAF50';
+    } else if (type === 'error') {
+        color = '#FF5722';
+    }
+
+    Toastify({
+        text,
+        duration: 3000,
+        gravity: 'bottom',
+        style: {
+            background: color,
+            borderRadius: '5px'
+        },
+    }).showToast();
+}
+
+let client = mqtt.connect(WebSocketURLAzure, options);
+
+console.log('client: ', client);
+client.on('connect', () => {
+    console.log('Mqtt conectado por WS! Exito!');
+    showToast('¡Mqtt conectado exitosamente por WS!', 'success');
+    // Me suscribo
+    client.subscribe('testtopic', { qos: 0 }, error => {
+        if(!error){
+            console.log('Suscripción Exitosa!');
+            showToast('¡Suscripción Exitosa!', 'success');
+        } else {
+            console.log('Suscripción fallida!');
+            showToast('¡Suscripción fallida!', 'error');
+        }
+    });
+});
+
+
+// Recibir mensaje
+client.on('message', (topic, message) => {
+    console.log('Mensaje recibido bajo tópico: ', topic, ' ->', message.toString());
+    showToast('¡Se ha recibido un mensaje con éxito!', 'success');
+    addMessage(message.toString(), 'receivedMessage');
+});
+
+client.on('error', (error) => {
+    console.log('Hubo un error al conectarse', error);
+    showToast('Hubo un error al conectarse', 'error');
+    // reconnectOtherClient();
+});
+
+client['stream'].on('error', (err) => {
+    console.log('error de conexión', err);
+    client.end()
+});
+
+client.on("reconnect", () => {
+    console.log("reconnecting!")
+});
 
 const filterMessages = (messageType = "todos") => {
     const mensajesEnviados =  Array.from(document.getElementsByClassName("mensaje-enviado"));
@@ -78,60 +155,29 @@ textArea.onkeyup = function() {
     
 };
 
-
-const sendMessage = () => {
-    console.log('click on button');
-    // textMessage =  textArea.value;
-    
-
+const sendMessage = () => {    
     // verificar primero que esté conectado
-    console.log('textMessage: ', textMessage);
     console.log('client: ', client.connected);
     sendButton.disabled = !!textMessage;
-    addMessage(textMessage, 'sendMessage');
-    if(!textMessage){
-        alert('Escriba un mensaje');
-    }
-
+    // addMessage(textMessage, 'sendMessage'); // Provisional -> solo par apruebas, debe borrarse
+    // textArea.value = ""; // Provisional -> solo par apruebas, debe borrarse
+   
     if(client.connected) {
         // Enviar mensaje
-        client.publish('salida', textMessage || 'Mensaje de prueba', error => {
+        client.publish('salida', textMessage, error => {
 
             if(error) {
-                alert('Su mensaje no pudo ser enviado', error);
+                showToast('¡Su mensaje no pudo ser enviado!', 'error');
                 console.log(error);
             } else {
                 console.log('Mensaje enviado!!!');
+                showToast('¡Su mensaje fue enviado con éxito!', 'success');
                 addMessage(textMessage, 'sendMessage');
-            }
-            
+                textArea.value = "";
+            }   
         });
     } else {
-        alert('El cliente no está conectado');
+        showToast('El cliente no está conectado');
     }
-   
-
 }
 
-client.on('connect', () => {
-    console.log('Mqtt conectado por WS! Exito!');
-
-    // Me suscribo
-    client.subscribe('testtopic', { qos: 0 }, error => {
-        if(!error){
-            console.log('Suscripción Exitosa!');
-        } else {
-            console.log('Suscripción fallida!');
-        }
-    });
-
-    // publico mensajes
-    client.publish('salida', 'esto es un verdadero éxito' || textMessage , error => {
-        console.log(error || 'Mensaje enviado!!!');
-    });
-});
-
-client.on('message', (topic, message) => {
-    console.log('Mensaje recibido bajo tópico: ', topic, ' ->', message.toString());
-    addMessage(message.toString(), listaMensajesRecibidos);
-});

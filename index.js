@@ -4,7 +4,6 @@
 // Azure: http://20.127.83.110:18083 -> tools -> websocket
 // user:admin
 // pass: public
-// import { filterMessages } from './messagesHelper.js';
 
 console.log(mqtt)
 
@@ -22,11 +21,9 @@ const options = {
 }
 
 const client = mqtt.connect(WebSocketURLAzure, options);
-// TODO: Hacer un client azure y un clientAWS y usar solo uno de los dos -> Hacer u archivo para cada uno
-
 
 console.log('client: ', client);
-// Conectar 
+// Conectar con servidor principal
 client.on('connect', () => {
     console.log('Mqtt conectado por WS! Exito!');
     showToast('¡Mqtt conectado exitosamente por WS!', 'success');
@@ -53,34 +50,27 @@ client.on("reconnect", () => {
     numberReconnecting ++;
     console.log("reconnecting!", numberReconnecting);
     showToast('Reconectando con el servidor...');
-    // Si el numñero de reconexiones pasa a ser mayor que 4, desconectar el cliente 
-    // TODO: Hacer lógica aquí de conectarse con el otro servidor
-    // if (numberReconnecting === 4) {
-        // client.end();
-    //}
 });
 
 // Cuando el cliente está desconectado:
 client.on('close', function () {
-    console.log('Disconnected');
+    console.log('El servidor está desconectado');
     if(numberReconnecting === 0 ) { // para que no se muestre a cada rato el toast
         showToast('El servidor está desconectado');
     }
-
+    // Si el número de reconexiones pasa a ser mayor que 3, desconectar el cliente 
     if (numberReconnecting === 3) {
         client.end();
         showToast('Número de intentos de reconexión excedido. Conectando Servidor 2...');
         connectBackupServer();
-        // ¿ se ued edesconectar o limpiar el mqtt?
-        // TODO: Hacer lógica aquí de conectarse con el otro servidor
-        // console.log(client);
     }
 });
 
 client.on('error', (error) => {
+    client.end();
     console.log('Hubo un error al conectarse', error);
     showToast('Hubo un error al conectarse', 'error');
-    // reconnectOtherClient();
+    connectBackupServer();
 });
 
 

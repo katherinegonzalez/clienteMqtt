@@ -1,4 +1,10 @@
+let textMessage;
 const noHayMensajes = document.getElementById('noMensajes');
+const selectElement = document.getElementById('selectMensajes');
+const sendButton = document.getElementById("btnEnviar");
+const textArea = document.getElementById("sMessage");
+selectElement.disabled = true;
+sendButton.disabled = true;
 
 const showToast = (text, type = '') => {
     let color = '#212121'
@@ -23,7 +29,7 @@ const addMessage = (message, idType) => {
     if (noHayMensajes.style.display = 'block') {
         noHayMensajes.style.display = 'none';
     }
-    
+  
     //Create an "li" node:
     const node = document.createElement("li");
     const liClass = idType === "receivedMessage" ? "mensaje-recibido": "mensaje-enviado";
@@ -45,10 +51,10 @@ const addMessage = (message, idType) => {
 
     // Append the "li" node to the list:
     document.getElementById("listaMensajesRecibidos").appendChild(node);
+    selectElement.disabled = false;
 }
 
 const filterMessages = (messageType = "todos") => {
-    //TODO: Bloquear el filter si no hay mensajes para evitar el error de que no se filtra
     const mensajesEnviados =  Array.from(document.getElementsByClassName("mensaje-enviado"));
     const mensajesRecibidos =  Array.from(document.getElementsByClassName("mensaje-recibido"));
    
@@ -66,60 +72,48 @@ const filterMessages = (messageType = "todos") => {
     }
 }
 
+const checkSendMessage = (error, textMessage) => {
+    if(error) {
+        showToast('¡Su mensaje no pudo ser enviado!', 'error');
+        console.log(error);
+    } else {
+        console.log('Mensaje enviado!!!');
+        showToast('¡Su mensaje fue enviado con éxito!', 'success');
+        addMessage(textMessage, 'sendMessage');
+        textArea.value = "";
+    }  
+}
+
 const sendMessage = () => {    
     // verificar primero que esté conectado
     console.log('client: ', client.connected);
     sendButton.disabled = !!textMessage; 
-    // TODO: Poner estilo al botón cuando está deshabilitado, del color y del cursor
-    // addMessage(textMessage, 'sendMessage'); // Provisional -> solo par apruebas, debe borrarse
-    // textArea.value = ""; // Provisional -> solo par apruebas, debe borrarse
+    addMessage(textMessage, 'sendMessage'); // Provisional -> solo par apruebas, debe borrarse
+    textArea.value = ""; // Provisional -> solo par apruebas, debe borrarse
    
     if(client.connected) {
         // Enviar mensaje
         client.publish('salida', textMessage, error => {
-
-            if(error) {
-                showToast('¡Su mensaje no pudo ser enviado!', 'error');
-                console.log(error);
-            } else {
-                console.log('Mensaje enviado!!!');
-                showToast('¡Su mensaje fue enviado con éxito!', 'success');
-                addMessage(textMessage, 'sendMessage');
-                textArea.value = "";
-            }   
+            checkSendMessage(error, textMessage); 
         });
     } else if(clientBackup.connected) {
         // Enviar mensaje
         clientBackup.publish('salida', textMessage, error => {
-
-            if(error) {
-                showToast('¡Su mensaje no pudo ser enviado!', 'error');
-                console.log(error);
-            } else {
-                console.log('Mensaje enviado!!!');
-                showToast('¡Su mensaje fue enviado con éxito!', 'success');
-                addMessage(textMessage, 'sendMessage');
-                textArea.value = "";
-            }   
+            checkSendMessage(error, textMessage); 
         });
-    }else {
+    } else {
         showToast('El cliente no está conectado');
     }
 }
-
-let textMessage;
-const selectElement = document.getElementById('selectMensajes');
-const sendButton = document.getElementById("btnEnviar");
-const textArea = document.getElementById("sMessage");
-
-sendButton.disabled = true;
 
 // Detectar cuando se escriba para saber si hay texto en el campo, para habilitar el botón
 textArea.onkeyup = function() {
     textMessage =  textArea.value;
     if(textMessage) {
         sendButton.disabled = false;
-    }  
+    } else {
+        sendButton.disabled = true;
+    }
 };
 
 // Controlar el filtro

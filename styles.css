@@ -55,6 +55,7 @@ ul {
 
 .messagges-container__list-title {
    flex: 1;
+   margin-right: 20px;
 }
 
 .messagges-container__list-title_container select {
@@ -122,6 +123,7 @@ button {
     padding: 10px 20px;
     color: #FFFFFF;
     border: none;
+    margin: 0 50px;
 }
 
 button:disabled {
@@ -131,6 +133,12 @@ button:disabled {
 
 .messagges-container__send-messages {
     height: 255px;
+}
+
+@media only screen and (max-width: 600px) {
+    .messages-container__content {
+        flex-direction: column;
+    }
 }
 
 

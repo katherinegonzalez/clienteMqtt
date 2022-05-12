@@ -71,8 +71,8 @@ const sendMessage = () => {
     console.log('client: ', client.connected);
     sendButton.disabled = !!textMessage; 
     // TODO: Poner estilo al botón cuando está deshabilitado, del color y del cursor
-    addMessage(textMessage, 'sendMessage'); // Provisional -> solo par apruebas, debe borrarse
-    textArea.value = ""; // Provisional -> solo par apruebas, debe borrarse
+    // addMessage(textMessage, 'sendMessage'); // Provisional -> solo par apruebas, debe borrarse
+    // textArea.value = ""; // Provisional -> solo par apruebas, debe borrarse
    
     if(client.connected) {
         // Enviar mensaje
@@ -88,7 +88,21 @@ const sendMessage = () => {
                 textArea.value = "";
             }   
         });
-    } else {
+    } else if(clientBackup.connected) {
+        // Enviar mensaje
+        clientBackup.publish('salida', textMessage, error => {
+
+            if(error) {
+                showToast('¡Su mensaje no pudo ser enviado!', 'error');
+                console.log(error);
+            } else {
+                console.log('Mensaje enviado!!!');
+                showToast('¡Su mensaje fue enviado con éxito!', 'success');
+                addMessage(textMessage, 'sendMessage');
+                textArea.value = "";
+            }   
+        });
+    }else {
         showToast('El cliente no está conectado');
     }
 }

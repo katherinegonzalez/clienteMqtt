@@ -9,10 +9,11 @@
 console.log(mqtt)
 
 let numberReconnecting = 0;
+let clientBackup;
 
 // Websocket  connect url
-const WebSocketURLAzure = "ws://20.127.83.110:8093/mqtt";
-const WebSocketURLAmazon = "ws://54.163.248.88:8093/mqtt";
+const WebSocketURLAzure = "ws://54.163.248.88:8093/mqtt"; // "ws://20.127.83.110:8093/mqtt";
+const WebSocketURLAmazon = "ws://20.127.83.110:8093/mqtt";// "ws://54.163.248.88:8093/mqtt";
 const options = {
     connectTimeout: 4000,
     clientId: 'mqttjs_40c2ffb357',
@@ -21,6 +22,8 @@ const options = {
 }
 
 const client = mqtt.connect(WebSocketURLAzure, options);
+// TODO: Hacer un client azure y un clientAWS y usar solo uno de los dos -> Hacer u archivo para cada uno
+
 
 console.log('client: ', client);
 // Conectar 
@@ -60,9 +63,15 @@ client.on("reconnect", () => {
 // Cuando el cliente está desconectado:
 client.on('close', function () {
     console.log('Disconnected');
-    showToast('Disconnected');
-    if (numberReconnecting === 4) {
+    if(numberReconnecting === 0 ) { // para que no se muestre a cada rato el toast
+        showToast('El servidor está desconectado');
+    }
+
+    if (numberReconnecting === 3) {
         client.end();
+        showToast('Número de intentos de reconexión excedido. Conectando Servidor 2...');
+        connectBackupServer();
+        // ¿ se ued edesconectar o limpiar el mqtt?
         // TODO: Hacer lógica aquí de conectarse con el otro servidor
         // console.log(client);
     }
@@ -73,4 +82,5 @@ client.on('error', (error) => {
     showToast('Hubo un error al conectarse', 'error');
     // reconnectOtherClient();
 });
+
 

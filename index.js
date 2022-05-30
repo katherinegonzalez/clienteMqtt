@@ -5,10 +5,6 @@
 // user:admin
 // pass: public
 
-// TODO: 
-// Revisar todo el código para ver si hay algo que toca limpiar
-// Subir a netlify o a github pages
-
 console.log(mqtt)
 
 let numberReconnecting = 0;

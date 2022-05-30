@@ -29,12 +29,19 @@ const addMessage = (message, idType) => {
     if (noHayMensajes.style.display = 'block') {
         noHayMensajes.style.display = 'none';
     }
-  
+
+    // Verifica filtro para ver si se debe ocultar o mostrar el nuevo mensaje
+    const selectMensajesValue = document.getElementById("selectMensajes").value
+
     //Create an "li" node:
     const node = document.createElement("li");
     const liClass = idType === "receivedMessage" ? "mensaje-recibido": "mensaje-enviado";
     node.classList.add(liClass);
-
+  
+    if ((selectMensajesValue === 'recibidos' && idType === "sendMessage") || 
+        (selectMensajesValue === 'enviados' && idType === "receivedMessage")) {
+        node.style.display = "none"
+    } 
 
     // Create img node
     const img = document.createElement("img");

@@ -88,8 +88,8 @@ const sendMessage = () => {
     // verificar primero que esté conectado
     console.log('client: ', client.connected);
     sendButton.disabled = !!textMessage; 
-    addMessage(textMessage, 'sendMessage'); // Provisional -> solo par apruebas, debe borrarse
-    textArea.value = ""; // Provisional -> solo par apruebas, debe borrarse
+    // addMessage(textMessage, 'sendMessage'); // Provisional -> solo para pruebas, debe borrarse o comentarse
+    // textArea.value = ""; // Provisional -> solo par apruebas, debe borrarse o comentarse
    
     if(client.connected) {
         // Enviar mensaje

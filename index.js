@@ -5,14 +5,18 @@
 // user:admin
 // pass: public
 
+// TODO: 
+// Revisar todo el código para ver si hay algo que toca limpiar
+// Subir a netlify o a github pages
+
 console.log(mqtt)
 
 let numberReconnecting = 0;
 let clientBackup;
 
 // Websocket  connect url
-const WebSocketURLAzure = "ws://54.163.248.88:8093/mqtt"; // "ws://20.127.83.110:8093/mqtt";
-const WebSocketURLAmazon = "ws://20.127.83.110:8093/mqtt";// "ws://54.163.248.88:8093/mqtt";
+const WebSocketURLAzure = "ws://20.127.83.110:8093/mqtt";
+const WebSocketURLBackup = "ws://20.25.7.126:8093/mqtt";
 const options = {
     connectTimeout: 4000,
     clientId: 'mqttjs_40c2ffb357',

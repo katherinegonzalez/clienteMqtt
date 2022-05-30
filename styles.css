@@ -1,8 +1,8 @@
 * {
     border: 0;
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
 body {
@@ -31,76 +31,75 @@ h1.messages-container__title {
     background-color: #FFFFFF;
     border-radius: 5px;
     box-shadow: 0px 2px 1px #e0dede;
+    display: flex;
     flex: 1;
+    flex-direction: column;
     margin: 10px;
     padding: 10px 15px;
-    display: flex;
-    flex-direction: column;
 }
 
-.messagges-container__list {
+.messages-container__list {
     flex: 1;
 }
 
-.messagges-container__list-title_container {
-    display: flex;
+.messages-container__list-title_container {
     align-items: center;
+    display: flex;
 }
 
 ul {
-    /*flex: 1;*/
     height: 440px;
     overflow: auto;
 }
 
-.messagges-container__list-title {
+.messages-container__list-title {
    flex: 1;
    margin-right: 20px;
 }
 
-.messagges-container__list-title_container select {
+.messages-container__list-title_container select {
+    appearance: none;
+    background-color: #FFFFFF;
+    background-image: url(/assets/icons/arrow_icon.svg);
+    background-repeat: no-repeat;
+    background-position: right 5px center;
+    background-size: 16px 12px;
+    border: 1px solid #d8e2ef;
     border-radius: 3px;
-    padding: 5px 25px 5px 10px;
+    color: #344050;
     font-size: 14px;
     font-weight: 400;
     line-height: 1.5;
-    color: #344050;
-    background-color: #FFFFFF;
-    border: 1px solid #d8e2ef;
-    background-image: url(/assets/icons/arrow_icon.svg);
-    background-repeat: no-repeat;
-    background-size: 16px 12px;
-    appearance: none;
+    padding: 5px 25px 5px 10px;
     -webkit-appearance: none;
-    background-position: right 5px center;
 }
 
-.messagges-container__list-title_container select:disabled {
+.messages-container__list-title_container select:disabled {
     cursor: not-allowed;
 }
 
-.messagges-container__list ul{
+.messages-container__list ul{
     padding: 0px;
 }
 
-.messagges-container__list li{
+.messages-container__list li{
+    border-bottom: 1px solid #d8e2ef;
     display: flex;
     list-style:  none;
-    border-bottom: 1px solid #d8e2ef;
     padding: 8px;
 }
 
 .icon-list {
-    height: 30px;
-    width:30px;
-    border-radius: 100%;
     background-color: #E6EFFC;
+    border-radius: 100%;
+    height: 30px;
     padding: 3px;
+    width:30px;
 }
 
-.messagges-container__list li span{
-    display: flex;
+.messages-container__list li span{
     align-items: center;
+    display: flex;
     margin-left: 10px;
 }
 
@@ -118,12 +117,12 @@ textarea::placeholder {
 
 button {
     background-color: #2c7be5;
-    border-radius: 3px;
-    cursor: pointer;
-    padding: 10px 20px;
-    color: #FFFFFF;
     border: none;
+    border-radius: 3px;
+    color: #FFFFFF;
+    cursor: pointer;
     margin: 0 50px;
+    padding: 10px 20px;
 }
 
 button:disabled {
@@ -131,7 +130,7 @@ button:disabled {
     opacity: 0.6;
 }
 
-.messagges-container__send-messages {
+.messages-container__send-messages {
     height: 255px;
 }
 

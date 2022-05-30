@@ -1,7 +1,7 @@
 const connectBackupServer = () => {
     console.log('Entra a conectar con el segundo servidor');
     let numberReconnectingBackup = 0;
-    clientBackup = mqtt.connect(WebSocketURLAmazon, options);
+    clientBackup = mqtt.connect(WebSocketURLBackup, options);
     console.log('clientBackup: ', clientBackup);
     // Conectar 
     clientBackup.on('connect', () => {

@@ -11,8 +11,8 @@ let numberReconnecting = 0;
 let clientBackup;
 
 // Websocket  connect url
-const WebSocketURLAzure = "wss://20.127.83.110:8094/mqtt"; // "ws://20.127.83.110:8093/mqtt"; 
-const WebSocketURLBackup = "wss://20.25.7.126:8094/mqtt"; // "ws://20.25.7.126:8093/mqtt"; 
+const WebSocketURLAzure = "ws://20.127.83.110:8093/mqtt"; // "wss://20.127.83.110:8094/mqtt"; 
+const WebSocketURLBackup = "ws://20.25.7.126:8093/mqtt"; // "wss://20.25.7.126:8094/mqtt";
 const options = {
     connectTimeout: 4000,
     clientId: 'mqttjs_40c2ffb357',

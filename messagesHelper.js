@@ -100,12 +100,12 @@ const sendMessage = () => {
    
     if(client.connected) {
         // Enviar mensaje
-        client.publish('salida', textMessage, error => {
+        client.publish('actuador', textMessage, error => {
             checkSendMessage(error, textMessage); 
         });
     } else if(clientBackup.connected) {
         // Enviar mensaje
-        clientBackup.publish('salida', textMessage, error => {
+        clientBackup.publish('actuador', textMessage, error => {
             checkSendMessage(error, textMessage); 
         });
     } else {
@@ -125,7 +125,6 @@ textArea.onkeyup = function() {
 
 // Controlar el filtro
 selectElement.addEventListener('change', (event) => {
-    console.log(event.target.value);
     filterMessages(event.target.value);
 });
 
